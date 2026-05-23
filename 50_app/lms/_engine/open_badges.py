@@ -98,6 +98,95 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+# === D-070: PyNaCl Ed25519 signer (W3C VC Data Integrity Proofs) ============
+
+
+import base64  # noqa: E402
+
+
+class Ed25519Signer:
+    """Ed25519 signer for Open Badges 3.0 VC Data Integrity Proofs.
+
+    Lazy-imports PyNaCl on first use; install with: pip install pynacl.
+    Per-issuer keypair; production generates offline + stores private key
+    encrypted at rest (file + gpg per F-046).
+    """
+
+    def __init__(self, signing_key_bytes: bytes, verification_method_iri: str):
+        self._signing_key_bytes = signing_key_bytes
+        self.verification_method_iri = verification_method_iri
+        self._signing_key = None
+
+    def _ensure_signing_key(self):
+        if self._signing_key is not None:
+            return
+        try:
+            from nacl.signing import SigningKey  # type: ignore
+        except ImportError as e:
+            raise ImportError(
+                "PyNaCl required for Ed25519 signing. Install with: pip install pynacl"
+            ) from e
+        self._signing_key = SigningKey(self._signing_key_bytes)
+
+    def sign_b64(self, message: bytes) -> str:
+        """Sign bytes; return base64url-encoded signature."""
+        self._ensure_signing_key()
+        signed = self._signing_key.sign(message)
+        return base64.urlsafe_b64encode(signed.signature).rstrip(b"=").decode("ascii")
+
+    def public_key_b64(self) -> str:
+        self._ensure_signing_key()
+        return base64.urlsafe_b64encode(bytes(self._signing_key.verify_key)).rstrip(b"=").decode("ascii")
+
+    @classmethod
+    def generate(cls, verification_method_iri: str) -> "Ed25519Signer":
+        """Generate a fresh Ed25519 keypair. Store the returned signer's
+        `_signing_key_bytes` securely (file + gpg encryption per F-046)."""
+        try:
+            from nacl.signing import SigningKey  # type: ignore
+        except ImportError as e:
+            raise ImportError(
+                "PyNaCl required. Install with: pip install pynacl"
+            ) from e
+        sk = SigningKey.generate()
+        return cls(bytes(sk), verification_method_iri=verification_method_iri)
+
+    @classmethod
+    def from_file(cls, path: str, verification_method_iri: str) -> "Ed25519Signer":
+        """Load a signing key from a binary file (32 raw bytes)."""
+        from pathlib import Path
+        with open(Path(path), "rb") as f:
+            data = f.read()
+        if len(data) != 32:
+            raise ValueError(f"Ed25519 signing key must be 32 bytes; got {len(data)}")
+        return cls(data, verification_method_iri=verification_method_iri)
+
+
+def verify_assertion(jsonld_with_proof: dict, public_key_b64: str) -> bool:
+    """Verify a signed Open Badges 3.0 JSON-LD assertion. Returns True iff valid."""
+    if "proof" not in jsonld_with_proof:
+        return False
+    proof = jsonld_with_proof["proof"]
+    signature_b64 = proof.get("proofValue", "")
+    payload = {k: v for k, v in jsonld_with_proof.items() if k != "proof"}
+    canonical = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    try:
+        from nacl.signing import VerifyKey  # type: ignore
+    except ImportError as e:
+        raise ImportError(
+            "PyNaCl required for Ed25519 verification. Install with: pip install pynacl"
+        ) from e
+    pad = "=" * (-len(public_key_b64) % 4)
+    vk_bytes = base64.urlsafe_b64decode(public_key_b64 + pad)
+    sig_pad = "=" * (-len(signature_b64) % 4)
+    sig_bytes = base64.urlsafe_b64decode(signature_b64 + sig_pad)
+    try:
+        VerifyKey(vk_bytes).verify(canonical.encode("utf-8"), sig_bytes)
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def assertion_to_jsonld(assertion: AssertionCredential) -> dict:
     """Convert an AssertionCredential to Open Badges 3.0 JSON-LD form.
 
@@ -156,13 +245,43 @@ class BadgeIssuer:
 
     Production wires this to:
     - Persistent ledger of issued credentials (append-only per F-046)
-    - Cryptographic signing (W3C VC Data Integrity Proofs; queued)
+    - Cryptographic signing via Ed25519 (W3C VC Data Integrity Proofs;
+      eddsa-2022 cryptosuite; per D-070 director approval)
     - Moodle LTI 1.3 + per-MOE LRS for distribution
+
+    Ed25519 signing is OPTIONAL via the `signer` constructor argument; if
+    not supplied, assertions are unsigned (suitable for dev/test). Production
+    issuers MUST pass a signer for verifiable credentials.
     """
 
-    def __init__(self, issuer: IssuerProfile):
+    def __init__(self, issuer: IssuerProfile, signer: Optional["Ed25519Signer"] = None):
         self.issuer = issuer
+        self.signer = signer
         self._issued: list[AssertionCredential] = []
+
+    def sign(self, assertion: AssertionCredential) -> dict:
+        """Sign a credential per W3C VC Data Integrity Proofs (Ed25519 + eddsa-2022).
+
+        Returns JSON-LD with `proof` block. Requires self.signer; raises
+        RuntimeError if no signer configured.
+        """
+        if self.signer is None:
+            raise RuntimeError(
+                "BadgeIssuer has no signer; cannot produce verifiable credential. "
+                "Construct with `BadgeIssuer(issuer, signer=Ed25519Signer.from_file(...))`."
+            )
+        jsonld = assertion_to_jsonld(assertion)
+        canonical = json.dumps(jsonld, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+        signature_b64 = self.signer.sign_b64(canonical.encode("utf-8"))
+        jsonld["proof"] = {
+            "type": "DataIntegrityProof",
+            "cryptosuite": "eddsa-2022",
+            "created": _now_iso(),
+            "verificationMethod": self.signer.verification_method_iri,
+            "proofPurpose": "assertionMethod",
+            "proofValue": signature_b64,
+        }
+        return jsonld
 
     def issue(
         self,

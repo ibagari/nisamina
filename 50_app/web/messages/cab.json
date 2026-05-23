@@ -1,40 +1,43 @@
 {
-  "platform": {
-    "name": "Nisamina",
-    "tagline": "Garifuna Dimurei + Wadagari Aturiahani — pending community translation",
-    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0"
+  "platform": { "name": "Nisamina", "tagline": "Garifuna Iñeñu + Aua Furendei Hawe Plataforma", "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0" },
+  "mode": { "learner": "Aturiahatibu", "practitioner": "Aderehatibu", "heritage": "Iduheñu" },
+  "nav": { "onboarding": "Hagumeseragua", "lessons": "Furenderaguatu", "lexicon": "Garidürawagu Dimurei", "tutor": "Aturiyaha", "badges": "[pending Garifuna term]", "chatbot": "[pending]", "a11y": "[pending]", "about": "Lubaragu" },
+  "home": { "title": "Buiti Achülürü — Buguya nuani.", "subtitle": "Aban Iduheñu-hatibei Garifuna plataforma — Komision Garifuna ñeingiñe + Ibagari Fundazion eteni habu.", "cta_learn": "Hagumeseragua", "cta_explore": "Arihina Dimurei", "cta_onboarding": "Iberentina — arihina nun" },
+  "onboarding": {
+    "title": "Buiti achülürü — Hadagimaditi halia hibagari",
+    "subtitle": "Murusu ariñagaguagi haya hagumesera. Mama ñeingiñe galunaguatu.",
+    "step1_title": "Ka labureyatia Garifuna libidienia hadaira ibagari?",
+    "step1_options": { "family_fluent": "Aban iduheñuñu lariña Garifuna buidugia", "family_some": "Aban iduheñuñu lariña Garifuna, gía gürigia habu", "community": "Iberi babiñe nügüguda dan tan", "none_yet": "Hagumeseragua mua — mamaron Garifuna nubaragua" },
+    "step2_title": "Ida hibagari hau Garifuna uguñe weyu?",
+    "step2_subtitle": "Buitiati hawagua — aganba luma ariñaga mama aban. Lariha ka liña.",
+    "step2_options": { "none": "Mama nubuni Garifuna luagu", "receptive": "Saminatina danme harariña amu; mariñagatina hama", "conversational": "Naridiena lugundu siñá-ariñagei", "fluent": "Ariñagatina Garifuna buidu; hineingudina alibachu + abürühati" },
+    "step3_title": "Ka biduheñü?",
+    "step3_subtitle": "Sun Garifuna iduheñu tan tau saminau — wabagari to.",
+    "step3_options": { "belize": "Belize", "honduras": "Honduras", "guatemala": "Guatemala", "nicaragua": "Nicaragua", "svg_yurumein": "Yurumein (San Vicente + las Granadinas)", "garicomm": "Sun-Garifuna (mama aban iduheñu)", "diaspora": "Niba lidaani (US/UK/uatu)" },
+    "step4_title": "Bidan",
+    "step4_heritage_intro": "Bidan tan Iduheñu — habomesera tibu lugundu siñá bibiri",
+    "step4_novice_intro": "Bidan tan Aturiahatibu — nu nu, lurban hawagua",
+    "step4_l1_intro": "Bidan tan L1-Aderehatibu — buiti ariñagahatu; lurban alibachu + abürühati",
+    "cta_next": "[pending]", "cta_back": "Aguragua", "cta_begin": "Hagumeseragua furenderaguatu"
   },
-  "mode": {
-    "learner": "Aturiahati",
-    "practitioner": "Aturiahatu",
-    "heritage": "Wadinari"
+  "lexicon": { "title": "Dimurei + Charts hadabudine", "subtitle": "[community translation pending] · 40 charts trilinguales · 29 subjects", "subject_label": "[pending]", "tier_label": "[pending]", "all_subjects": "[pending]", "elder_gated_note": "Lubaragu lubule (yarafu, eremuha, abuduahani) ñeingiña Komision-elder authority. Per Labayayahoun Ibagari + F-031." },
+  "badges": { "title": "[pending]", "subtitle": "[pending]", "empty": "[pending]", "earned": "[pending]", "view_credential": "[pending]",
+    "achievement_kinds": { "lesson_completion": "[pending]", "mastery_milestone": "[pending]", "cultural_protocol_acknowledgment": "[pending]", "teacher_cpd_completion": "[pending]", "cohort_graduation": "[pending]" }
   },
-  "nav": {
-    "lessons": "[pending]",
-    "lexicon": "[pending]",
-    "chatbot": "[pending]",
-    "about": "[pending]"
+  "tutor": { "title": "[pending]", "subtitle": "[community translation pending — Commission elder review]",
+    "scaffold_levels": { "open": "[pending]", "guiding": "[pending]", "hinted": "[pending]", "modeled": "[pending]", "direct_instruct": "[pending]" },
+    "submit": "[pending]", "request_hint": "[pending]", "cite_sources": "[pending]", "session_complete": "[pending]"
   },
-  "home": {
-    "title": "Buguya nuani.",
-    "subtitle": "[community translation pending — Commission consultation per F-031]",
-    "cta_learn": "[pending]",
-    "cta_explore": "[pending]"
+  "a11y_panel": { "title": "[pending]", "subtitle": "[pending] Per WCAG 2.2 AAA + W3C COGA.",
+    "reduced_motion": "[pending]", "reduced_motion_desc": "[pending]",
+    "text_spacing": "[pending]", "text_spacing_normal": "[pending]", "text_spacing_loose": "[pending]", "text_spacing_extra_loose": "[pending]",
+    "dyslexic_font": "[pending]", "dyslexic_font_desc": "[pending]",
+    "high_contrast": "[pending]", "plain_language": "[pending]", "plain_language_desc": "[pending]",
+    "bandwidth_mode": "[pending]", "bandwidth_full": "[pending]", "bandwidth_audio": "[pending]", "bandwidth_text": "[pending]", "bandwidth_print": "[pending]",
+    "save": "[pending]"
   },
-  "cultural_protocol": {
-    "title": "Labayayahoun Ibagari",
-    "principle": "[Garifuna translation pending — community translation pipeline + Commission sign-off]"
-  },
-  "footer": {
-    "attribution_chain": "[pending]",
-    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0",
-    "commission": "Garifuna Commission on Education",
-    "foundation": "Ibagari"
-  },
-  "a11y": {
-    "skip_to_content": "[pending]",
-    "dyslexic_toggle": "[pending]",
-    "high_contrast_toggle": "[pending]",
-    "dark_mode_toggle": "[pending]"
-  }
+  "lang_switcher": { "interface_label": "[pending]", "target_label": "[pending]", "envir_label": "Iduheñu", "current": "Uguñe weyu" },
+  "cultural_protocol": { "title": "Labayayahoun Ibagari — Fundazion lubaragu", "principle": "Garifuna iñeñu lubaragu Labayayahoun Ibagari — Fundazion lubaragu. Datos mama wahain wabudine — wagia awandaguatibei. Sun lufurihouni laga aganaguahaun Garifuna gürigia, ñeingiñe Komision Garifuna luma Ibagari Fundazion. Larigi lehegua agüriahati — iduheñu-lihouni ti dimurei lun lübürühaña-rütima." },
+  "footer": { "attribution_chain": "Iarani", "license": "Lisensia", "commission": "Garifuna ñiremuha-Eteni Hawa Komision", "foundation": "Ibagari Fundazion (501(c)(3))" },
+  "a11y": { "skip_to_content": "Aliha lun [pending]", "dyslexic_toggle": "[pending]", "high_contrast_toggle": "[pending]", "dark_mode_toggle": "[pending]" }
 }

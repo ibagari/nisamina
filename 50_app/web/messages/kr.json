@@ -1,40 +1,43 @@
 {
-  "platform": {
-    "name": "Nisamina",
-    "tagline": "[Belize Kriol translation pending — community translation pipeline]",
-    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0"
+  "platform": { "name": "Nisamina", "tagline": "Garifuna Language + Culture Learning Platform", "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0" },
+  "mode": { "learner": "Larnah", "practitioner": "Practishanah", "heritage": "Heritij" },
+  "nav": { "onboarding": "Staat", "lessons": "Lesahnz", "lexicon": "Diksshanri", "tutor": "Tutah", "badges": "Bajiz", "chatbot": "Chatbot", "a11y": "Akseseebilitee", "about": "Bowt" },
+  "home": { "title": "Welkam — Buguya nuani.", "subtitle": "Wahn komyooniti-oan Garifuna larnin platform, bil wid di Garifuna Comishan pahn Edyukayshan ahn di Ibagari Fownday-shahn.", "cta_learn": "Staat larn", "cta_explore": "Eksplor di diksshanri", "cta_onboarding": "Ah nyoo — show mi weh fi staat" },
+  "onboarding": {
+    "title": "Welkam — mek wi fain weh yoo deh",
+    "subtitle": "Wahn few kweschan wi help wi shay-p yoo paat. No rong ansa.",
+    "step1_title": "Hoo eena yoo laif speak Garifuna?",
+    "step1_options": { "family_fluent": "Wahn famli memba speak ih flooant", "family_some": "Wahn famli memba speak som, moas wid di eldaz", "community": "Peepl eena mi komyooniti speak ih", "none_yet": "Ah di larn fres — no Garifuna rong mi yet" },
+    "step2_title": "How komfatabl yoo wid Garifuna rait now?",
+    "step2_subtitle": "Bee onist — lisn ahn speak diffrant ting. Choos weh fit.",
+    "step2_options": { "none": "Ah no know no Garifuna yet", "receptive": "Ah ondastan som wen oddaz speak; ah no speak ih moch", "conversational": "Ah ku hav wahn beysik kanvasayshan", "fluent": "Ah speak Garifuna komfatabl; ah waahn reed + rait beta" },
+    "step3_title": "Which komyooniti a yoorz?",
+    "step3_subtitle": "Eech Garifuna komyooniti hav ihn oan vayrayshanz — wi wi anor yoorz.",
+    "step3_options": { "belize": "Belize", "honduras": "Honduras", "guatemala": "Guatemala", "nicaragua": "Nicaragua", "svg_yurumein": "Sayn Vinsent + di Grenadeenz (Yurumein)", "garicomm": "Pan-Garifuna (no wahn single komyooniti)", "diaspora": "Ah eena di diaspora (US/UK/oda)" },
+    "step4_title": "Yoo paat",
+    "step4_heritage_intro": "Yoo deh pahn di Heritij paat — wi wi staat wid weh yoo famli aredi gi yoo.",
+    "step4_novice_intro": "Yoo deh pahn di Nuvis paat — step bai step, wi wi bil dis tugeda.",
+    "step4_l1_intro": "Yoo deh pahn di L1-mayntayna paat — schrang oral fowndayshan; wi wi gu deepa eena rid + rait.",
+    "cta_next": "Neks", "cta_back": "Bak", "cta_begin": "Staat larn"
   },
-  "mode": {
-    "learner": "[pending]",
-    "practitioner": "[pending]",
-    "heritage": "[pending]"
+  "lexicon": { "title": "Diksshanri + Larnin Chaats", "subtitle": "[community translation pending — Belize Kriol]", "subject_label": "Sobjik", "tier_label": "Teer", "all_subjects": "Aal sobjikz", "elder_gated_note": "Som kantent (daans, myoozik, seremoni) need Komishan elda authority." },
+  "badges": { "title": "Mi Bajiz", "subtitle": "Verifaiabl dijital kredenshalz per Open Badges 3.0.", "empty": "No bajiz yet — komplit wahn lesahn fi ern yoo fos wan.", "earned": "Ern", "view_credential": "Veo kredenshal",
+    "achievement_kinds": { "lesson_completion": "Lesahn komplisshan", "mastery_milestone": "Mastri mailstoan", "cultural_protocol_acknowledgment": "Kolcheral aknolijment", "teacher_cpd_completion": "Teecha CPD", "cohort_graduation": "Kohort grajwayshan" }
   },
-  "nav": {
-    "lessons": "[pending]",
-    "lexicon": "[pending]",
-    "chatbot": "[pending]",
-    "about": "[pending]"
+  "tutor": { "title": "Sokratik Tutah", "subtitle": "Wahn growndid AI tutah weh skafold, nat lekcha.",
+    "scaffold_levels": { "open": "Oapn kweschan", "guiding": "Gaidid kweschan", "hinted": "Wid hint", "modeled": "Wak-out egzampl fos", "direct_instruct": "Direk instrokshan" },
+    "submit": "Sub-mit ansa", "request_hint": "Sho mi a hint", "cite_sources": "Sors", "session_complete": "Seshan komplit — kom bak wen yoo redi."
   },
-  "home": {
-    "title": "[pending]",
-    "subtitle": "[pending]",
-    "cta_learn": "[pending]",
-    "cta_explore": "[pending]"
+  "a11y_panel": { "title": "Akseseebilitee prefranz", "subtitle": "Dehn setinz seyv pahn yoo divais. Per WCAG 2.2 AAA + W3C COGA.",
+    "reduced_motion": "Redoos moashan", "reduced_motion_desc": "Paaz animayshanz + chranziishanz.",
+    "text_spacing": "Teks spaysin", "text_spacing_normal": "Naamal", "text_spacing_loose": "Loos (1.5×)", "text_spacing_extra_loose": "Ekschra loos (2×)",
+    "dyslexic_font": "Disleksia-frenli font", "dyslexic_font_desc": "Yooz OpenDyslexic-flayva spaysin.",
+    "high_contrast": "Hai kantras", "plain_language": "Sympl-langwij somaree", "plain_language_desc": "Ad sympla-langwij somaree neks tu eech lesahn step.",
+    "bandwidth_mode": "Kaneksin moad", "bandwidth_full": "Ful (oadyo + vidyo + imaij)", "bandwidth_audio": "Oadyo + teks oanli", "bandwidth_text": "Teks oanli", "bandwidth_print": "Print warkbuk moad",
+    "save": "Seyv prefranz"
   },
-  "cultural_protocol": {
-    "title": "Labayayahoun Ibagari",
-    "principle": "[Belize Kriol translation pending]"
-  },
-  "footer": {
-    "attribution_chain": "[pending]",
-    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0",
-    "commission": "Garifuna Commission on Education",
-    "foundation": "Ibagari Foundation"
-  },
-  "a11y": {
-    "skip_to_content": "[pending]",
-    "dyslexic_toggle": "[pending]",
-    "high_contrast_toggle": "[pending]",
-    "dark_mode_toggle": "[pending]"
-  }
+  "lang_switcher": { "interface_label": "Intafays langwij", "target_label": "Taagit daileek", "envir_label": "Komyooniti", "current": "Korent" },
+  "cultural_protocol": { "title": "Labayayahoun Ibagari — di Fownday-shahn Gaadyaanship", "principle": "Di Garifuna langwij held andah Labayayahoun Ibagari — di Fownday-shahn gaadyaanship. Daata na oand bot kay-erd fa. Eni benefit weh kom out flo bak tu di Garifuna peepl, chroo di Garifuna Comishan pahn Edyukayshan ahn di Ibagari Fownday-shahn. Yoozij gif wid agüriahati — di kinship-ak fa nocha di langwij eena di neks jenarayshan." },
+  "footer": { "attribution_chain": "Achribyooshan", "license": "Laisens", "commission": "Garifuna Comishan pahn Edyukayshan", "foundation": "Ibagari Fownday-shahn (501(c)(3))" },
+  "a11y": { "skip_to_content": "Skip tu di mayn kantent", "dyslexic_toggle": "Disleksia-frenli font", "high_contrast_toggle": "Hai kantras", "dark_mode_toggle": "Daak moad" }
 }

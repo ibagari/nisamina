@@ -1,40 +1,43 @@
 {
-  "platform": {
-    "name": "Nisamina",
-    "tagline": "Plataforma de aprendizaje de lengua y cultura garífuna",
-    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0"
+  "platform": { "name": "Nisamina", "tagline": "Plataforma de aprendizaje del idioma + la cultura Garífuna", "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0" },
+  "mode": { "learner": "Aprendiz", "practitioner": "Practicante", "heritage": "Patrimonio" },
+  "nav": { "onboarding": "Empezar", "lessons": "Lecciones", "lexicon": "Léxico", "tutor": "Tutor", "badges": "Insignias", "chatbot": "Asistente", "a11y": "Accesibilidad", "about": "Acerca de" },
+  "home": { "title": "Bienvenido/a — Buguya nuani.", "subtitle": "Una plataforma de aprendizaje Garífuna de propiedad comunitaria, construida con la Comisión de Educación Garífuna y la Fundación Ibagari.", "cta_learn": "Empezar a aprender", "cta_explore": "Explorar el diccionario", "cta_onboarding": "Soy nuevo/a — muéstrame por dónde empezar" },
+  "onboarding": {
+    "title": "Bienvenido/a — encontremos en dónde estás",
+    "subtitle": "Unas pocas preguntas nos ayudan a moldear tu camino. No hay respuestas incorrectas.",
+    "step1_title": "¿Quién en tu vida habla Garífuna?",
+    "step1_options": { "family_fluent": "Un familiar lo habla con fluidez", "family_some": "Un familiar lo habla algo, sobre todo con los ancianos", "community": "Personas en mi comunidad lo hablan", "none_yet": "Estoy aprendiendo desde cero — todavía no hay Garífuna a mi alrededor" },
+    "step2_title": "¿Qué tan cómodo/a te sientes con Garífuna ahora mismo?",
+    "step2_subtitle": "Sé sincero/a — escuchar y hablar son cosas distintas. Elige lo que mejor te describe.",
+    "step2_options": { "none": "No sé nada de Garífuna todavía", "receptive": "Entiendo algo cuando otros lo hablan; yo no lo hablo mucho", "conversational": "Puedo mantener una conversación básica", "fluent": "Hablo Garífuna con comodidad; quiero leer + escribir mejor" },
+    "step3_title": "¿Cuál es tu comunidad?",
+    "step3_subtitle": "Cada comunidad Garífuna tiene sus propias variaciones — honraremos la tuya.",
+    "step3_options": { "belize": "Belice", "honduras": "Honduras", "guatemala": "Guatemala", "nicaragua": "Nicaragua", "svg_yurumein": "San Vicente + las Granadinas (Yurumein)", "garicomm": "Pan-Garífuna (sin una sola comunidad)", "diaspora": "Estoy en la diáspora (EE.UU./Reino Unido/otros)" },
+    "step4_title": "Tu camino",
+    "step4_heritage_intro": "Vas por el camino del Patrimonio — empezaremos con lo que tu familia ya te dio.",
+    "step4_novice_intro": "Vas por el camino del Principiante — paso a paso, construiremos esto juntos/as.",
+    "step4_l1_intro": "Vas por el camino del Mantenedor-L1 — base oral fuerte; profundizaremos la alfabetización + el registro.",
+    "cta_next": "Siguiente", "cta_back": "Atrás", "cta_begin": "Empezar a aprender"
   },
-  "mode": {
-    "learner": "Aprendiz",
-    "practitioner": "Profesional",
-    "heritage": "Patrimonio"
+  "lexicon": { "title": "Léxico + Gráficos de aprendizaje", "subtitle": "Explora el léxico Garífuna canónico + 40 gráficos trilingües de aprendizaje en 29 materias.", "subject_label": "Materia", "tier_label": "Nivel", "all_subjects": "Todas las materias", "elder_gated_note": "Algunos contenidos (danza, música, ceremonia) requieren la autoridad de un anciano de la Comunidad — esos gráficos muestran una referencia, no detalles." },
+  "badges": { "title": "Mis Insignias", "subtitle": "Credenciales digitales verificables por Open Badges 3.0.", "empty": "Aún no hay insignias — completa una lección o un hito de dominio para ganar la primera.", "earned": "Obtenida", "view_credential": "Ver credencial",
+    "achievement_kinds": { "lesson_completion": "Finalización de lección", "mastery_milestone": "Hito de dominio", "cultural_protocol_acknowledgment": "Reconocimiento cultural", "teacher_cpd_completion": "DPC del docente", "cohort_graduation": "Graduación de cohorte" }
   },
-  "nav": {
-    "lessons": "Lecciones",
-    "lexicon": "Diccionario",
-    "chatbot": "Chatbot",
-    "about": "Acerca de"
+  "tutor": { "title": "Tutor Socrático", "subtitle": "Un tutor de IA fundamentado que da andamiaje, no clases magistrales.",
+    "scaffold_levels": { "open": "Pregunta abierta", "guiding": "Pregunta guiada", "hinted": "Con pista", "modeled": "Ejemplo trabajado primero", "direct_instruct": "Instrucción directa" },
+    "submit": "Enviar respuesta", "request_hint": "Muéstrame una pista", "cite_sources": "Fuentes", "session_complete": "Sesión completada — regresa cuando estés listo/a."
   },
-  "home": {
-    "title": "Bienvenido — Buguya nuani.",
-    "subtitle": "Una plataforma de aprendizaje garífuna construida con la Comisión Garífuna de Educación y la Fundación Ibagari.",
-    "cta_learn": "Comenzar a aprender",
-    "cta_explore": "Explorar el diccionario"
+  "a11y_panel": { "title": "Preferencias de accesibilidad", "subtitle": "Estos ajustes se guardan en tu dispositivo. Per WCAG 2.2 AAA + W3C Making Content Usable (COGA).",
+    "reduced_motion": "Reducir el movimiento", "reduced_motion_desc": "Pausa animaciones + transiciones.",
+    "text_spacing": "Espaciado del texto", "text_spacing_normal": "Normal", "text_spacing_loose": "Amplio (1.5×)", "text_spacing_extra_loose": "Muy amplio (2×)",
+    "dyslexic_font": "Fuente para dislexia", "dyslexic_font_desc": "Usa espaciado tipo OpenDyslexic.",
+    "high_contrast": "Alto contraste", "plain_language": "Resúmenes en lenguaje sencillo", "plain_language_desc": "Añade resúmenes en lenguaje sencillo junto a cada paso de la lección.",
+    "bandwidth_mode": "Modo de conexión", "bandwidth_full": "Completo (audio + video + imágenes)", "bandwidth_audio": "Solo audio + texto", "bandwidth_text": "Solo texto", "bandwidth_print": "Modo cuaderno imprimible",
+    "save": "Guardar preferencias"
   },
-  "cultural_protocol": {
-    "title": "Labayayahoun Ibagari — la guardianía de la Fundación",
-    "principle": "La lengua garífuna se mantiene bajo Labayayahoun Ibagari — la guardianía de la Fundación. Los datos no se poseen sino que se cuidan. Cualquier beneficio derivado fluye de regreso al pueblo garífuna, a través de la Comisión Garífuna de Educación y la Fundación Ibagari. El uso se da con agüriahati — el acto de parentesco de cuidar la lengua hacia la próxima generación."
-  },
-  "footer": {
-    "attribution_chain": "Atribución",
-    "license": "Licencia",
-    "commission": "Comisión Garífuna de Educación",
-    "foundation": "Fundación Ibagari (501(c)(3))"
-  },
-  "a11y": {
-    "skip_to_content": "Saltar al contenido principal",
-    "dyslexic_toggle": "Fuente para dislexia",
-    "high_contrast_toggle": "Alto contraste",
-    "dark_mode_toggle": "Modo oscuro"
-  }
+  "lang_switcher": { "interface_label": "Idioma de la interfaz", "target_label": "Dialecto objetivo", "envir_label": "Comunidad", "current": "Actual" },
+  "cultural_protocol": { "title": "Labayayahoun Ibagari — la Tutela de la Fundación", "principle": "El idioma Garífuna se mantiene bajo Labayayahoun Ibagari — la tutela de la Fundación. Los datos no se poseen sino que se cuidan. Cualquier beneficio derivado regresa al pueblo Garífuna, a través de la Comisión de Educación Garífuna y la Fundación Ibagari. El uso se obsequia con agüriahati — el acto de parentesco de nutrir el idioma para la próxima generación." },
+  "footer": { "attribution_chain": "Atribución", "license": "Licencia", "commission": "Comisión de Educación Garífuna", "foundation": "Fundación Ibagari (501(c)(3))" },
+  "a11y": { "skip_to_content": "Saltar al contenido principal", "dyslexic_toggle": "Fuente para dislexia", "high_contrast_toggle": "Alto contraste", "dark_mode_toggle": "Modo oscuro" }
 }

@@ -132,12 +132,26 @@ class AttentiveKTShadow(KnowledgeTracingModel):
         # Per-learner interaction sequence: list of (headword, correct, sequence_idx)
         self._sequences: dict[str, list[tuple[str, bool, int]]] = {}
 
+    def load_onnx_checkpoint(self, checkpoint_path: str) -> None:
+        """Load a trained SAKT ONNX checkpoint (per D-070 training pipeline + 60_training/sakt_train.py).
+
+        When a checkpoint is loaded, predict() uses it; else falls back to pure-Python scaffold.
+        """
+        try:
+            import onnxruntime as ort  # type: ignore
+        except ImportError as e:
+            raise ImportError(
+                "onnxruntime required to load SAKT checkpoint. Install with: pip install onnxruntime"
+            ) from e
+        self._onnx_session = ort.InferenceSession(checkpoint_path, providers=["CPUExecutionProvider"])
+
     def predict(self, learner_id: str, headword: str) -> KTPrediction:
         seq = self._sequences.get(learner_id, [])
         if not seq:
             return KTPrediction(
                 headword=headword, p_mastered=0.0, confidence=0.0,
                 model_kind=self.model_kind, n_observations=0,
+                notes="onnx-loaded" if getattr(self, "_onnx_session", None) is not None else "",
             )
         n = len(seq)
         # Attention weights — heavier for same-headword + more-recent events

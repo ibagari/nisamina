@@ -1,0 +1,4 @@
+# Nisamina engine API requirements
+fastapi>=0.110
+uvicorn[standard]>=0.27
+# Engine imports lms._engine — already pure-Python
