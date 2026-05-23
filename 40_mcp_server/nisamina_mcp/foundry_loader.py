@@ -16,8 +16,16 @@ import json
 from pathlib import Path
 from typing import Iterator
 
-_NISAMINA_APP = Path(__file__).resolve().parent.parent.parent
-FOUNDRY_PATH = _NISAMINA_APP / "30_lexicon" / "foundry_v6" / "foundry_v6_v0_2.jsonl"
+# Foundry path detection — two supported layouts:
+#   - Local dev: foundry_loader.py at nisamina-app/40_mcp_server/nisamina_mcp/ — foundry at parents[2]/30_lexicon/foundry_v6/
+#   - HF Space:  foundry_loader.py at /app/nisamina_mcp/             — foundry at /app/30_lexicon/foundry_v6/
+_HERE = Path(__file__).resolve().parent  # .../nisamina_mcp/
+_CANDIDATE_LOCAL = _HERE.parent.parent / "30_lexicon" / "foundry_v6" / "foundry_v6_v0_2.jsonl"
+_CANDIDATE_SPACE = _HERE.parent / "30_lexicon" / "foundry_v6" / "foundry_v6_v0_2.jsonl"
+if _CANDIDATE_SPACE.exists():
+    FOUNDRY_PATH = _CANDIDATE_SPACE
+else:
+    FOUNDRY_PATH = _CANDIDATE_LOCAL
 
 
 class FoundryIndex:

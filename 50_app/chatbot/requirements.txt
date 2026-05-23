@@ -8,7 +8,10 @@
 
 # Brain (HF Space deploy) — GGUF loader for Gemma 4 E4B-it (pre-built CPU wheel):
 llama-cpp-python>=0.3
-huggingface_hub>=0.25
+# huggingface_hub HfFolder was kept until 0.26 (removed in 0.26+). Both gradio 4.x
+# and the gradio 5.0.0 baseline that HF Space pins via sdk_version still import
+# HfFolder in oauth.py. Pin <0.26 for compat regardless of gradio minor version.
+huggingface_hub>=0.25,<0.26
 
 # TTS (facebook/mms-tts-cab via VITS — needs transformers + torch):
 transformers>=4.45
@@ -16,7 +19,12 @@ torch>=2.1
 safetensors>=0.4
 
 # UI:
-gradio>=4.40
+# Pin gradio 5.x — 4.x had gradio_client/_json_schema_to_python_type recursive-$ref bug
+# that crashed on certain JSON schemas; 5.x has stable JSON-schema introspection.
+# gradio 5 is backward-compatible with Blocks + Chatbot + Audio components used here.
+gradio>=5.0,<6
+# audioop-lts for Python 3.13+ (stdlib audioop removed); pydub fallback. Safe on 3.12 too.
+audioop-lts>=0.2.2; python_version >= "3.13"
 
 # Engineer-side dev (already present in repo via M-P2):
 # - nisamina_mcp (40_mcp_server/) — local import; no PyPI needed

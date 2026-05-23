@@ -17,6 +17,24 @@ from .pathway import (
     HERITAGE_PATHWAY, NOVICE_PATHWAY, L1_MAINTAINER_PATHWAY,
     pathway_for, PathwayResolver, PathwayAdapter,
 )
+from .neologism_queue import NeologismQueue, NeologismRequest, NeologismApproval, RequestStatus
+from .stem_lesson_gen import LessonGenerator, ConceptSpec, SourceRef
+from .multimodal import (
+    AssetKind, ConsentScope, MultimodalAsset, AssetCatalog, make_asset,
+)
+from .games import (
+    GameKind, GameItem, GameSession, make_session, difficulty_for_pathway,
+)
+from .a11y import (
+    ContrastLevel, BandwidthMode, WorkbookSection,
+    contrast_ratio, classify_contrast, validate_touch_target,
+    render_workbook_markdown, select_assets_for_mode,
+    MIN_TOUCH_TARGET_PX,
+)
+from .charts import (
+    ChartSubject, ChartTier, TrilingualGloss, ChartItem, Chart, ChartCatalog,
+)
+from .chart_seed import build_seed_catalog
 
 __all__ = [
     "Lesson", "Unit", "Step", "StepKind", "LessonState", "LessonPlayer",
@@ -26,4 +44,14 @@ __all__ = [
     "PathwayKind", "RegisterTier", "LearnerProfile", "PathwaySpec",
     "HERITAGE_PATHWAY", "NOVICE_PATHWAY", "L1_MAINTAINER_PATHWAY",
     "pathway_for", "PathwayResolver", "PathwayAdapter",
+    "NeologismQueue", "NeologismRequest", "NeologismApproval", "RequestStatus",
+    "LessonGenerator", "ConceptSpec", "SourceRef",
+    "AssetKind", "ConsentScope", "MultimodalAsset", "AssetCatalog", "make_asset",
+    "GameKind", "GameItem", "GameSession", "make_session", "difficulty_for_pathway",
+    "ContrastLevel", "BandwidthMode", "WorkbookSection",
+    "contrast_ratio", "classify_contrast", "validate_touch_target",
+    "render_workbook_markdown", "select_assets_for_mode",
+    "MIN_TOUCH_TARGET_PX",
+    "ChartSubject", "ChartTier", "TrilingualGloss", "ChartItem", "Chart", "ChartCatalog",
+    "build_seed_catalog",
 ]

@@ -1,0 +1,101 @@
+name: CI
+
+# Per F-074 PN-17 + F-054 23 quality gates (subset enabled now; more land
+# at M-P3.LMS.QUALITY_GATES per F-054 spec).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: pytest 3-suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: |
+            50_app/chatbot/requirements.txt
+            40_mcp_server/requirements.txt
+
+      - name: Install lightweight deps (test-time only)
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-xdist
+
+      - name: Run 80_validation suite
+        run: |
+          python -m pytest 80_validation/unit_tests/ -q --no-header
+
+      - name: Run MCP server suite
+        working-directory: 40_mcp_server
+        run: |
+          python -m pytest tests/ -q --no-header
+
+      - name: Run chatbot suite (mock mode)
+        run: |
+          python -m pytest 50_app/chatbot/tests/ -q --no-header
+
+  lint:
+    name: lint (ruff)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12', cache: 'pip' }
+      - run: pip install ruff
+      - run: ruff check --select=E,F,W --ignore=E501 .
+
+  json-validity:
+    name: governance JSONL validity
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Validate ledger JSONL files
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          from pathlib import Path
+          fails = []
+          # Public repo subset — only the JSONL files that exist in public
+          for p in Path('.').rglob('*.jsonl'):
+            with p.open(encoding='utf-8') as f:
+              for i, line in enumerate(f, 1):
+                line = line.strip()
+                if not line:
+                  continue
+                try:
+                  json.loads(line)
+                except json.JSONDecodeError as e:
+                  fails.append(f"{p}:{i}: {e}")
+          if fails:
+            for f in fails: print(f)
+            sys.exit(1)
+          print('All JSONL files valid')
+          PY
+
+  # Future gates (queued M-P3.LMS.QUALITY_GATES per F-054 §3 + F-059 §5):
+  # - a11y:    npx axe-core CI against built web app
+  # - lighthouse: Lighthouse CI A11y ≥95 + PWA ≥90
+  # - hallucination: garifuna_bench harness over a held-out fixture
+  # - tier-gate: per-tier conformance audit against foundry slice
