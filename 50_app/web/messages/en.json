@@ -10,16 +10,122 @@
     "heritage": "Heritage"
   },
   "nav": {
+    "onboarding": "Get started",
     "lessons": "Lessons",
     "lexicon": "Lexicon",
+    "tutor": "Tutor",
+    "badges": "Badges",
     "chatbot": "Chatbot",
+    "a11y": "Accessibility",
     "about": "About"
   },
   "home": {
     "title": "Welcome — Buguya nuani.",
     "subtitle": "A community-owned Garifuna learning platform built with the Garifuna Commission on Education and the Ibagari Foundation.",
     "cta_learn": "Start learning",
-    "cta_explore": "Explore the dictionary"
+    "cta_explore": "Explore the dictionary",
+    "cta_onboarding": "I'm new — show me where to begin"
+  },
+  "onboarding": {
+    "title": "Welcome — let's find where you are",
+    "subtitle": "A few questions help us shape your path. There are no wrong answers.",
+    "step1_title": "Who in your life speaks Garifuna?",
+    "step1_options": {
+      "family_fluent": "A family member speaks it fluently",
+      "family_some": "A family member speaks some, mostly with elders",
+      "community": "People in my community speak it",
+      "none_yet": "I'm learning fresh — no Garifuna around me yet"
+    },
+    "step2_title": "How comfortable are you with Garifuna right now?",
+    "step2_subtitle": "Be honest — listening and speaking are different. Choose what fits.",
+    "step2_options": {
+      "none": "I don't know any Garifuna yet",
+      "receptive": "I understand some when others speak; I don't speak it much",
+      "conversational": "I can have a basic conversation",
+      "fluent": "I speak Garifuna comfortably; I want to read + write better"
+    },
+    "step3_title": "Which community is yours?",
+    "step3_subtitle": "Each Garifuna community has its own variations — we'll honor yours.",
+    "step3_options": {
+      "belize": "Belize",
+      "honduras": "Honduras",
+      "guatemala": "Guatemala",
+      "nicaragua": "Nicaragua",
+      "svg_yurumein": "Saint Vincent + the Grenadines (Yurumein)",
+      "garicomm": "Pan-Garifuna (no single community)",
+      "diaspora": "I'm in the diaspora (US/UK/elsewhere)"
+    },
+    "step4_title": "Your path",
+    "step4_heritage_intro": "You're on the Heritage path — we'll start with what your family already gave you.",
+    "step4_novice_intro": "You're on the Novice path — step by step, we'll build this together.",
+    "step4_l1_intro": "You're on the L1-maintainer path — strong oral foundation; we'll deepen literacy + register.",
+    "cta_next": "Next",
+    "cta_back": "Back",
+    "cta_begin": "Begin learning"
+  },
+  "lexicon": {
+    "title": "Lexicon + Learning Charts",
+    "subtitle": "Browse the canonical Garifuna lexicon + 40 trilingual learning charts across 29 subjects.",
+    "subject_label": "Subject",
+    "tier_label": "Tier",
+    "all_subjects": "All subjects",
+    "elder_gated_note": "Some content (dance, music, ceremony) requires community elder authority — those charts surface a referral, not specifics."
+  },
+  "badges": {
+    "title": "My Badges",
+    "subtitle": "Verifiable digital credentials per Open Badges 3.0.",
+    "empty": "No badges yet — complete a lesson or mastery milestone to earn your first.",
+    "earned": "Earned",
+    "view_credential": "View credential",
+    "achievement_kinds": {
+      "lesson_completion": "Lesson completion",
+      "mastery_milestone": "Mastery milestone",
+      "cultural_protocol_acknowledgment": "Cultural acknowledgment",
+      "teacher_cpd_completion": "Teacher CPD",
+      "cohort_graduation": "Cohort graduation"
+    }
+  },
+  "tutor": {
+    "title": "Socratic Tutor",
+    "subtitle": "A grounded AI tutor that scaffolds, not lectures.",
+    "scaffold_levels": {
+      "open": "Open question",
+      "guiding": "Guided question",
+      "hinted": "With hint",
+      "modeled": "Worked example first",
+      "direct_instruct": "Direct instruction"
+    },
+    "submit": "Submit response",
+    "request_hint": "Show me a hint",
+    "cite_sources": "Sources",
+    "session_complete": "Session complete — return when you're ready."
+  },
+  "a11y_panel": {
+    "title": "Accessibility preferences",
+    "subtitle": "These settings save to your device. Per WCAG 2.2 AAA + W3C Making Content Usable (COGA).",
+    "reduced_motion": "Reduce motion",
+    "reduced_motion_desc": "Pauses animations + transitions.",
+    "text_spacing": "Text spacing",
+    "text_spacing_normal": "Normal",
+    "text_spacing_loose": "Loose (1.5×)",
+    "text_spacing_extra_loose": "Extra loose (2×)",
+    "dyslexic_font": "Dyslexia-friendly font",
+    "dyslexic_font_desc": "Uses OpenDyslexic-flavored serif spacing.",
+    "high_contrast": "High contrast",
+    "plain_language": "Plain language summaries",
+    "plain_language_desc": "Adds simpler-language summaries next to every lesson step.",
+    "bandwidth_mode": "Connection mode",
+    "bandwidth_full": "Full (audio + video + images)",
+    "bandwidth_audio": "Audio + text only",
+    "bandwidth_text": "Text only",
+    "bandwidth_print": "Print workbook mode",
+    "save": "Save preferences"
+  },
+  "lang_switcher": {
+    "interface_label": "Interface language",
+    "target_label": "Target dialect",
+    "envir_label": "Community",
+    "current": "Current"
   },
   "cultural_protocol": {
     "title": "Labayayahoun Ibagari — the Foundation's Guardianship",
