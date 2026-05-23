@@ -35,6 +35,15 @@ from .charts import (
     ChartSubject, ChartTier, TrilingualGloss, ChartItem, Chart, ChartCatalog,
 )
 from .chart_seed import build_seed_catalog
+from .kgraph import KnowledgeGraph, Node, Edge, NodeKind, EdgeKind
+from .mastery import MasteryGate, MasteryGateResult, threshold_for_pathway
+from .micro import (
+    MicroUnitKind, MicroUnit, MicroSession, DailyMicroDelivery,
+    DEFAULT_MICRO_DURATION_MINUTES, MAX_MICRO_DURATION_MINUTES,
+)
+from .tutor import (
+    ScaffoldLevel, TutorTurn, TutorState, SocraticTutor, SocraticBrainCallable,
+)
 
 __all__ = [
     "Lesson", "Unit", "Step", "StepKind", "LessonState", "LessonPlayer",
@@ -54,4 +63,9 @@ __all__ = [
     "MIN_TOUCH_TARGET_PX",
     "ChartSubject", "ChartTier", "TrilingualGloss", "ChartItem", "Chart", "ChartCatalog",
     "build_seed_catalog",
+    "KnowledgeGraph", "Node", "Edge", "NodeKind", "EdgeKind",
+    "MasteryGate", "MasteryGateResult", "threshold_for_pathway",
+    "MicroUnitKind", "MicroUnit", "MicroSession", "DailyMicroDelivery",
+    "DEFAULT_MICRO_DURATION_MINUTES", "MAX_MICRO_DURATION_MINUTES",
+    "ScaffoldLevel", "TutorTurn", "TutorState", "SocraticTutor", "SocraticBrainCallable",
 ]
