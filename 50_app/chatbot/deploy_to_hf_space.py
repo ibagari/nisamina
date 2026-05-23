@@ -148,6 +148,17 @@ def main() -> int:
         # 3. garifuna_bench tree (including subpackages — tasks/ + fixtures/)
         safe_copy_tree(REPO_ROOT / "80_validation" / "garifuna_bench", stage / "garifuna_bench")
 
+        # 3b. D-071: LMS engine bundle — orchestrator imports lms._engine for
+        # SocraticTutor + CompositeVerifier + KGRAPH + MasteryGate + Pathway etc.
+        # Without this bundle, orchestrator falls back to _LMS_AVAILABLE=False and
+        # tutor features are dark on HF Space.
+        (stage / "lms").mkdir(parents=True, exist_ok=True)
+        # Empty package init so `lms` is importable
+        (stage / "lms" / "__init__.py").write_text(
+            '"""Nisamina LMS engine package (HF Space layout)."""\n'
+        )
+        safe_copy_tree(REPO_ROOT / "50_app" / "lms" / "_engine", stage / "lms" / "_engine")
+
         # 4. Foundry corpus (LFS-uploaded automatically by HfApi)
         safe_copy_file(
             REPO_ROOT / "30_lexicon" / "foundry_v6" / "foundry_v6_v0_2.jsonl",

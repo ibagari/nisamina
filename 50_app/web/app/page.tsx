@@ -16,7 +16,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-wrap gap-3 mt-6">
             <a
-              href="/learner"
+              href="/onboarding"
               className={cn(
                 "inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground",
                 "px-5 py-2.5 text-sm font-medium",
@@ -24,7 +24,7 @@ export default function HomePage() {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               )}
             >
-              {t("home.cta_learn")}
+              I&apos;m new — show me where to begin
             </a>
             <a
               href="/lexicon"
@@ -36,6 +36,17 @@ export default function HomePage() {
               )}
             >
               {t("home.cta_explore")}
+            </a>
+            <a
+              href="/tutor"
+              className={cn(
+                "inline-flex items-center justify-center rounded-md border border-border bg-background",
+                "px-5 py-2.5 text-sm font-medium",
+                "hover:bg-muted transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              )}
+            >
+              Try the Socratic Tutor
             </a>
           </div>
           <div className="flex flex-wrap gap-2 mt-6 text-xs">

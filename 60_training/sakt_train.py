@@ -49,6 +49,113 @@ def _require_torch():
         ) from e
 
 
+# === EdNet-KT1 DataLoader scaffold (D-071) =================================
+# Per Riiid 2020 + 1EdTech KT benchmarking convention. EdNet-KT1 is the
+# standard Knowledge Tracing benchmark: 131M interactions; 13K users; CC BY-NC.
+# Download: https://github.com/riiid/ednet (engineer-runs-it; ~10 MB compressed).
+
+
+def load_ednet_kt1(
+    csv_path,
+    max_seq: int = 200,
+    min_user_interactions: int = 5,
+):
+    """Load EdNet-KT1 from CSV; return per-user interaction sequences.
+
+    EdNet-KT1 schema: timestamp, user_id, item_id, answered_correctly, ...
+    Returns: dict {user_id: [(item_id, correct_int, timestamp), ...]}, sorted by ts.
+    Filters users with < min_user_interactions to reduce noise.
+    """
+    import csv
+    interactions: dict[str, list[tuple]] = {}
+    with open(csv_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            uid = row.get("user_id") or row.get("user", "")
+            iid = row.get("item_id") or row.get("question_id", "")
+            correct = int(row.get("answered_correctly", "0"))
+            ts = int(row.get("timestamp", "0"))
+            if not uid or not iid:
+                continue
+            interactions.setdefault(uid, []).append((iid, correct, ts))
+    # Sort each user's sequence by timestamp + filter low-count users
+    out = {}
+    for uid, seq in interactions.items():
+        if len(seq) < min_user_interactions:
+            continue
+        seq.sort(key=lambda x: x[2])
+        # Truncate to max_seq tail (most recent)
+        out[uid] = seq[-max_seq:]
+    return out
+
+
+def build_ednet_dataloader(
+    interactions,
+    skill_id_map,
+    batch_size: int = 256,
+    max_seq: int = 200,
+    shuffle: bool = True,
+):
+    """Build PyTorch DataLoader from EdNet interactions + skill_id_map.
+
+    Per SAKT input convention:
+    - input_ids: 2*n_skills + 1 vocab (skill_id + correctness encoded; 0 = pad)
+    - target_skills: skill_id sequence (the "next" skill query)
+    - targets: correctness for the next skill
+    """
+    torch, _, _ = _require_torch()
+    from torch.utils.data import DataLoader, Dataset
+
+    class EdNetDataset(Dataset):
+        def __init__(self, seqs):
+            self.seqs = list(seqs.items())
+
+        def __len__(self):
+            return len(self.seqs)
+
+        def __getitem__(self, idx):
+            _, seq = self.seqs[idx]
+            # Encode each (skill, correct) interaction as 2*skill + correct
+            encoded = []
+            target_skills = []
+            targets = []
+            for i, (item_id, correct, _ts) in enumerate(seq):
+                skill_id = skill_id_map.get(item_id, 0)
+                interaction_token = 2 * skill_id + correct + 1  # +1 to leave 0 = pad
+                encoded.append(interaction_token)
+                if i + 1 < len(seq):
+                    next_item_id, next_correct, _ = seq[i + 1]
+                    next_skill = skill_id_map.get(next_item_id, 0)
+                    target_skills.append(next_skill)
+                    targets.append(next_correct)
+                else:
+                    target_skills.append(0)
+                    targets.append(0)
+            # Pad to max_seq
+            pad_len = max_seq - len(encoded)
+            if pad_len > 0:
+                encoded = [0] * pad_len + encoded
+                target_skills = [0] * pad_len + target_skills
+                targets = [0] * pad_len + targets
+            else:
+                encoded = encoded[-max_seq:]
+                target_skills = target_skills[-max_seq:]
+                targets = targets[-max_seq:]
+            return (
+                torch.tensor(encoded, dtype=torch.long),
+                torch.tensor(target_skills, dtype=torch.long),
+                torch.tensor(targets, dtype=torch.float),
+            )
+
+    return DataLoader(EdNetDataset(interactions), batch_size=batch_size, shuffle=shuffle)
+
+
+def build_skill_id_map(interactions) -> dict:
+    """Build a stable skill_id → integer mapping from interactions. Returns dict."""
+    all_items = sorted({iid for seq in interactions.values() for (iid, _, _) in seq})
+    return {iid: i + 1 for i, iid in enumerate(all_items)}  # 0 reserved for pad
+
+
 # === SAKT architecture (Pandey & Karypis 2019; arXiv 1907.06837) ============
 
 
