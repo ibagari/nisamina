@@ -52,6 +52,20 @@ from .blocks import (
 from .lesson_block_player import (
     BlockPlayerState, BlockReference, BlockPlayerSession, LessonBlockPlayer,
 )
+from .learner_model import (
+    KTModelKind, KTPrediction, KnowledgeTracingModel,
+    BKTModel, AttentiveKTShadow, LearnerModelHybrid, HybridPrediction,
+)
+from .recommender import (
+    RecommendCandidate, AgentScore, RankedCandidate,
+    RecommenderAgent, PrereqAgent, DifficultyAgent, DiversityAgent,
+    AffectAgent, ExploreAgent, SacredTierVeto, Recommender,
+)
+from .open_badges import (
+    AchievementKind, CriteriaSpec, BadgeClass, IssuerProfile,
+    RecipientIdentifier, AssertionCredential, BadgeIssuer, assertion_to_jsonld,
+    OPEN_BADGES_3_CONTEXT,
+)
 from .tutor_verifier import (
     VerifierStatus, VerifierIssue, VerifierResult, Verifier,
     OrthographyVerifier, FoundryExistenceVerifier, DialectTagVerifier, CompositeVerifier,
@@ -97,6 +111,14 @@ __all__ = [
     "BlockRenderContext", "RenderedBlock", "Score", "ProvenanceRef",
     "LessonBlock", "BlockRegistry", "VocabFlashcardBlock",
     "BlockPlayerState", "BlockReference", "BlockPlayerSession", "LessonBlockPlayer",
+    "KTModelKind", "KTPrediction", "KnowledgeTracingModel",
+    "BKTModel", "AttentiveKTShadow", "LearnerModelHybrid", "HybridPrediction",
+    "RecommendCandidate", "AgentScore", "RankedCandidate",
+    "RecommenderAgent", "PrereqAgent", "DifficultyAgent", "DiversityAgent",
+    "AffectAgent", "ExploreAgent", "SacredTierVeto", "Recommender",
+    "AchievementKind", "CriteriaSpec", "BadgeClass", "IssuerProfile",
+    "RecipientIdentifier", "AssertionCredential", "BadgeIssuer", "assertion_to_jsonld",
+    "OPEN_BADGES_3_CONTEXT",
     "VerifierStatus", "VerifierIssue", "VerifierResult", "Verifier",
     "OrthographyVerifier", "FoundryExistenceVerifier", "DialectTagVerifier", "CompositeVerifier",
     "ReviewQueue", "ReviewProposal", "ReviewDecision", "ReviewStatus",
