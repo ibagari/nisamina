@@ -38,6 +38,12 @@ class Step:
     correct_response: Optional[str] = None
     attribution_refs: tuple[str, ...] = ()
     consent_ref: Optional[str] = None
+    # D-065 UX gap #2 (Sweller cognitive-load segmentation): per-Step primary modality
+    # Default "text"; pathway-specific defaults applied by PathwayAdapter:
+    #   HERITAGE → "audio" (elder voice first); NOVICE → "visual"; L1_MAINTAINER → "text"
+    primary_modality: str = "text"             # "audio" | "visual" | "text" | "interactive"
+    # D-065 UX gap #5 (WCAG 2.2 AAA + W3C COGA): plain-language summary toggle
+    plain_summary: Optional[str] = None        # surfaced when learner enables COGA mode
 
 
 @dataclass(frozen=True)

@@ -873,6 +873,96 @@ GARIFUNA_CULTURAL_CYCLE_CHART = Chart(
 )
 
 
+# === NGSS 6-cycle extended set (per F-076-AMENDMENT-2 + D-065) ==============
+
+CARBON_CYCLE_CHART = Chart(
+    chart_id="chart.cycle.carbon",
+    subject=ChartSubject.PROCESS_CYCLES,
+    title=_g(None, "Carbon Cycle", "Ciclo del carbono"),
+    tier=ChartTier.PUBLIC,
+    grade_bands=("05_Lower_Secondary_Grades_6_to_9", "06_Upper_Secondary_Grades_10_to_12"),
+    items=(
+        ChartItem("cc.photosynthesis", _g(None, "photosynthesis", "fotosíntesis"), cultural_anchor="cassava + plantain biomass"),
+        ChartItem("cc.respiration", _g(None, "respiration", "respiración")),
+        ChartItem("cc.combustion", _g(None, "combustion", "combustión")),
+        ChartItem("cc.decomposition", _g(None, "decomposition", "descomposición")),
+        ChartItem("cc.ocean_absorption", _g(None, "ocean carbon absorption", "absorción oceánica de carbono"), cultural_anchor="Caribbean reef + mangrove carbon sequestration"),
+        ChartItem("cc.fossilization", _g(None, "fossilization", "fosilización")),
+    ),
+    cultural_context_note="NGSS HS-LS2-5 + HS-ESS2-6. Caribbean ecology anchor: reef + mangrove sequestration. Terms pending Garifuna technical-register coining.",
+)
+
+NITROGEN_CYCLE_CHART = Chart(
+    chart_id="chart.cycle.nitrogen",
+    subject=ChartSubject.PROCESS_CYCLES,
+    title=_g(None, "Nitrogen Cycle", "Ciclo del nitrógeno"),
+    tier=ChartTier.PUBLIC,
+    grade_bands=("05_Lower_Secondary_Grades_6_to_9", "06_Upper_Secondary_Grades_10_to_12"),
+    items=(
+        ChartItem("nc.fixation", _g(None, "nitrogen fixation", "fijación de nitrógeno"), cultural_anchor="legumes + cassava companion-planting traditions"),
+        ChartItem("nc.nitrification", _g(None, "nitrification", "nitrificación")),
+        ChartItem("nc.assimilation", _g(None, "assimilation", "asimilación")),
+        ChartItem("nc.ammonification", _g(None, "ammonification", "amonificación")),
+        ChartItem("nc.denitrification", _g(None, "denitrification", "desnitrificación")),
+    ),
+    cultural_context_note="NGSS MS-LS2-3. Caribbean agricultural anchor: traditional cassava-bean companion-planting fixes nitrogen; ICH-relevant agroecological knowledge.",
+)
+
+UNIVERSE_CYCLE_CHART = Chart(
+    chart_id="chart.cycle.universe",
+    subject=ChartSubject.PROCESS_CYCLES,
+    title=_g(None, "Universe Cycle (stellar)", "Ciclo del universo (estelar)"),
+    tier=ChartTier.PUBLIC,
+    grade_bands=("05_Lower_Secondary_Grades_6_to_9", "06_Upper_Secondary_Grades_10_to_12"),
+    items=(
+        ChartItem("uc.nebula", _g(None, "nebula", "nebulosa")),
+        ChartItem("uc.star_birth", _g(None, "star formation", "formación estelar")),
+        ChartItem("uc.main_sequence", _g(None, "main sequence", "secuencia principal"), cultural_anchor="weyu (sun) is a main-sequence star"),
+        ChartItem("uc.red_giant", _g(None, "red giant", "gigante roja")),
+        ChartItem("uc.supernova", _g(None, "supernova", "supernova")),
+        ChartItem("uc.neutron_star", _g(None, "neutron star / black hole", "estrella de neutrones / agujero negro")),
+        ChartItem("uc.element_seeding", _g(None, "heavy element seeding", "siembra de elementos pesados"), cultural_anchor="all heavy elements in cassava + canoe wood came from supernovae"),
+    ),
+    cultural_context_note="NGSS HS-ESS1-1/2/3. Garifuna cosmological cross-ref: weyu/hati/waruguma. Anchors cultural identity to literal stellar lineage of every atom.",
+)
+
+PLATE_TECTONIC_CYCLE_CHART = Chart(
+    chart_id="chart.cycle.plate_tectonic",
+    subject=ChartSubject.PROCESS_CYCLES,
+    title=_g(None, "Plate Tectonic Cycle", "Ciclo tectónico de placas"),
+    tier=ChartTier.PUBLIC,
+    grade_bands=("05_Lower_Secondary_Grades_6_to_9", "06_Upper_Secondary_Grades_10_to_12"),
+    items=(
+        ChartItem("pt.divergent", _g(None, "divergent boundary", "límite divergente")),
+        ChartItem("pt.convergent", _g(None, "convergent boundary", "límite convergente"), cultural_anchor="Caribbean plate boundaries cause earthquakes affecting our coastal communities"),
+        ChartItem("pt.transform", _g(None, "transform boundary", "límite transformante")),
+        ChartItem("pt.subduction", _g(None, "subduction", "subducción")),
+        ChartItem("pt.volcanism", _g(None, "volcanism", "vulcanismo"), cultural_anchor="St Vincent's La Soufrière 1979 + 2021 eruptions impacted Garifuna communities"),
+        ChartItem("pt.mountain_building", _g(None, "mountain building", "formación de montañas")),
+    ),
+    cultural_context_note="NGSS MS-ESS2-1/2/3. SVG-Yurumein cultural-historical anchor: La Soufrière eruptions are part of living Garifuna memory; cultural-resilience teaching opportunity.",
+)
+
+ROCK_CYCLE_CHART = Chart(
+    chart_id="chart.cycle.rock",
+    subject=ChartSubject.PROCESS_CYCLES,
+    title=_g(None, "Rock Cycle", "Ciclo de las rocas"),
+    tier=ChartTier.PUBLIC,
+    grade_bands=("04_Upper_Elementary_Grades_3_to_5", "05_Lower_Secondary_Grades_6_to_9"),
+    items=(
+        ChartItem("rc.igneous", _g(None, "igneous rock", "roca ígnea"), cultural_anchor="volcanic rock from St Vincent / Caribbean arc"),
+        ChartItem("rc.sedimentary", _g(None, "sedimentary rock", "roca sedimentaria"), cultural_anchor="Caribbean coral limestone formations"),
+        ChartItem("rc.metamorphic", _g(None, "metamorphic rock", "roca metamórfica")),
+        ChartItem("rc.weathering", _g(None, "weathering", "meteorización")),
+        ChartItem("rc.erosion", _g(None, "erosion", "erosión"), cultural_anchor="hurricane + tide-driven coastal erosion"),
+        ChartItem("rc.deposition", _g(None, "deposition", "deposición"), cultural_anchor="sandy beach formation from coral weathering"),
+        ChartItem("rc.melting", _g(None, "melting", "fusión")),
+        ChartItem("rc.crystallization", _g(None, "crystallization", "cristalización")),
+    ),
+    cultural_context_note="NGSS 4-ESS1-1 + MS-ESS2-1. Caribbean ecology anchors: coral limestone + volcanic rock + coastal erosion patterns.",
+)
+
+
 # === Seed the catalog =======================================================
 
 def build_seed_catalog() -> ChartCatalog:
@@ -906,6 +996,9 @@ def build_seed_catalog() -> ChartCatalog:
         # Process/cycle tier — per F-076-AMENDMENT-2 (NGSS K-12 6-cycle + Caribbean + Garifuna cultural cycles)
         DAY_NIGHT_CYCLE_CHART, WATER_CYCLE_CHART, LIFE_CYCLE_CHART,
         PLANT_CYCLE_CHART, SEASONAL_CYCLE_CHART, GARIFUNA_CULTURAL_CYCLE_CHART,
+        # NGSS 6-cycle extended set (per D-065 + roadmap NGSS extension)
+        CARBON_CYCLE_CHART, NITROGEN_CYCLE_CHART, UNIVERSE_CYCLE_CHART,
+        PLATE_TECTONIC_CYCLE_CHART, ROCK_CYCLE_CHART,
     ):
         catalog.add(chart)
     return catalog

@@ -124,3 +124,155 @@ class OpenLearnerModel:
             "mastered_count": self.mastered_count(),
             "mastery_rate": self.mastery_rate(),
         }
+
+
+# ============================================================================
+# Negotiable OLM extensions (D-065 SOA gap #3)
+# ============================================================================
+# Per Bull & Kay 2020 + Dimitrova STyLE-OLM + Jivet et al. 2020 systematic review.
+# Inspectable → Negotiable: learner can challenge the model's belief and the
+# system enters a structured debate before updating.
+#
+# Per [[feedback-no-hindsight-whitewashing]]: belief_audit_log is append-only;
+# original beliefs are preserved with timestamps; corrections add new records
+# referencing the prior via correction_ref.
+
+
+import json  # noqa: E402 — module-level fine for stdlib
+from datetime import datetime, timezone  # noqa: E402
+from enum import Enum  # noqa: E402
+
+
+class BeliefRevisionStatus(str, Enum):
+    PROPOSED = "proposed"
+    ACCEPTED_BY_LEARNER = "accepted_by_learner"   # learner accepts the system's current belief
+    UPDATE_REQUESTED = "update_requested"          # learner contests; requests update
+    UPDATED = "updated"                            # system applied an update
+    DISMISSED = "dismissed"                        # system dismissed the contest with rationale
+
+
+@dataclass(frozen=True)
+class BeliefRevisionProposal:
+    """Learner-initiated challenge to the system's belief about a headword."""
+    proposal_id: str
+    learner_id: str
+    headword: str
+    system_p_mastered: float
+    learner_claim: str                             # e.g., "I know this; the model is wrong"
+    learner_evidence: str                          # e.g., "I used this word with my grandmother yesterday"
+    proposed_at: str                               # ISO 8601 UTC
+    status: BeliefRevisionStatus = BeliefRevisionStatus.PROPOSED
+
+
+@dataclass(frozen=True)
+class BeliefRevisionResolution:
+    """System decision on a learner challenge."""
+    proposal_ref: str
+    decision: BeliefRevisionStatus                 # UPDATED | DISMISSED
+    new_p_mastered: Optional[float]                # if UPDATED
+    rationale: str
+    decided_at: str                                # ISO 8601 UTC
+
+
+def _now_iso_olm() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+class NegotiableOLMExtension:
+    """Mix-in-style extension that adds Negotiable OLM behavior to an OpenLearnerModel.
+
+    Used by composition (not inheritance) to keep OpenLearnerModel's data class
+    semantics clean. The extension persists a separate belief_audit_log JSONL
+    next to the OLM (append-only) and exposes propose/resolve methods.
+    """
+
+    def __init__(self, olm: "OpenLearnerModel"):
+        self.olm = olm
+        self._audit_log: list[dict] = []           # in-memory; production persists to JSONL
+        self._proposals: dict[str, BeliefRevisionProposal] = {}
+        self._next_id = 1
+
+    def propose_belief_revision(
+        self,
+        *,
+        headword: str,
+        learner_claim: str,
+        learner_evidence: str,
+    ) -> BeliefRevisionProposal:
+        belief = self.olm.beliefs.get(headword)
+        system_p = belief.p_mastered if belief else 0.0
+        proposal_id = f"belief_rev_{self._next_id:05d}"
+        self._next_id += 1
+        proposal = BeliefRevisionProposal(
+            proposal_id=proposal_id,
+            learner_id=self.olm.learner_id,
+            headword=headword,
+            system_p_mastered=system_p,
+            learner_claim=learner_claim,
+            learner_evidence=learner_evidence,
+            proposed_at=_now_iso_olm(),
+        )
+        self._proposals[proposal_id] = proposal
+        self._audit_log.append({
+            "record_type": "proposal",
+            "proposal_id": proposal_id,
+            "learner_id": self.olm.learner_id,
+            "envir": self.olm.envir,
+            "headword": headword,
+            "system_p_mastered_at_proposal": system_p,
+            "learner_claim": learner_claim,
+            "learner_evidence": learner_evidence,
+            "proposed_at": proposal.proposed_at,
+        })
+        return proposal
+
+    def resolve(
+        self,
+        *,
+        proposal_id: str,
+        decision: BeliefRevisionStatus,
+        new_p_mastered: Optional[float] = None,
+        rationale: str = "",
+    ) -> BeliefRevisionResolution:
+        if proposal_id not in self._proposals:
+            raise KeyError(f"unknown proposal_id: {proposal_id}")
+        if decision == BeliefRevisionStatus.UPDATED:
+            if new_p_mastered is None:
+                raise ValueError("UPDATED decision requires new_p_mastered")
+            if not (0.0 <= new_p_mastered <= 1.0):
+                raise ValueError(f"new_p_mastered must be in [0,1]; got {new_p_mastered}")
+            # Apply update — but preserve the original belief in audit log
+            proposal = self._proposals[proposal_id]
+            belief = self.olm.beliefs.get(proposal.headword)
+            if belief is not None:
+                # Mutate p_mastered via object.__setattr__ since MasteryBelief is a regular dataclass
+                belief.p_mastered = new_p_mastered  # noqa: E501 — direct mutation OK on non-frozen dataclass
+        resolution = BeliefRevisionResolution(
+            proposal_ref=proposal_id,
+            decision=decision,
+            new_p_mastered=new_p_mastered,
+            rationale=rationale,
+            decided_at=_now_iso_olm(),
+        )
+        self._audit_log.append({
+            "record_type": "resolution",
+            "proposal_ref": proposal_id,
+            "decision": decision.value,
+            "new_p_mastered": new_p_mastered,
+            "rationale": rationale,
+            "decided_at": resolution.decided_at,
+        })
+        return resolution
+
+    def belief_audit_log(self) -> list[dict]:
+        """Append-only record of belief proposals + resolutions."""
+        return list(self._audit_log)
+
+    def pending_proposals(self) -> list[BeliefRevisionProposal]:
+        # A proposal is pending if no resolution record references it
+        resolved_refs = {
+            r.get("proposal_ref")
+            for r in self._audit_log
+            if r.get("record_type") == "resolution"
+        }
+        return [p for p in self._proposals.values() if p.proposal_id not in resolved_refs]

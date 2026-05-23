@@ -44,6 +44,19 @@ from .micro import (
 from .tutor import (
     ScaffoldLevel, TutorTurn, TutorState, SocraticTutor, SocraticBrainCallable,
 )
+from .review_queue import ReviewQueue, ReviewProposal, ReviewDecision, ReviewStatus
+from .xapi import XAPIStatement, XAPIEmitter, caliper_to_xapi
+from .affect_gentle import (
+    EngagementSignal, NudgeKind, Nudge, AffectState, GentleNudgeGenerator,
+    DEFAULT_SOFT_NUDGE_MINUTES, DEFAULT_HARD_STOP_MINUTES,
+    DEFAULT_GENTLE_RETURN_DAYS, DEFAULT_FRUSTRATION_WINDOW_INCORRECT,
+)
+from .elder_loop import ElderReviewItemKind, ElderReviewItem, ElderReviewQueue
+from .versioned_kgraph import KGEdit, KGraphProposal, VersionedKnowledgeGraph
+from .olm import (
+    BeliefRevisionStatus, BeliefRevisionProposal, BeliefRevisionResolution,
+    NegotiableOLMExtension,
+)
 
 __all__ = [
     "Lesson", "Unit", "Step", "StepKind", "LessonState", "LessonPlayer",
@@ -68,4 +81,13 @@ __all__ = [
     "MicroUnitKind", "MicroUnit", "MicroSession", "DailyMicroDelivery",
     "DEFAULT_MICRO_DURATION_MINUTES", "MAX_MICRO_DURATION_MINUTES",
     "ScaffoldLevel", "TutorTurn", "TutorState", "SocraticTutor", "SocraticBrainCallable",
+    "ReviewQueue", "ReviewProposal", "ReviewDecision", "ReviewStatus",
+    "XAPIStatement", "XAPIEmitter", "caliper_to_xapi",
+    "EngagementSignal", "NudgeKind", "Nudge", "AffectState", "GentleNudgeGenerator",
+    "DEFAULT_SOFT_NUDGE_MINUTES", "DEFAULT_HARD_STOP_MINUTES",
+    "DEFAULT_GENTLE_RETURN_DAYS", "DEFAULT_FRUSTRATION_WINDOW_INCORRECT",
+    "ElderReviewItemKind", "ElderReviewItem", "ElderReviewQueue",
+    "KGEdit", "KGraphProposal", "VersionedKnowledgeGraph",
+    "BeliefRevisionStatus", "BeliefRevisionProposal", "BeliefRevisionResolution",
+    "NegotiableOLMExtension",
 ]
