@@ -49,6 +49,9 @@ from .blocks import (
     BlockRenderContext, RenderedBlock, Score, ProvenanceRef,
     LessonBlock, BlockRegistry, VocabFlashcardBlock,
 )
+from .lesson_block_player import (
+    BlockPlayerState, BlockReference, BlockPlayerSession, LessonBlockPlayer,
+)
 from .tutor_verifier import (
     VerifierStatus, VerifierIssue, VerifierResult, Verifier,
     OrthographyVerifier, FoundryExistenceVerifier, DialectTagVerifier, CompositeVerifier,
@@ -93,6 +96,7 @@ __all__ = [
     "CognitiveLoadSignal",
     "BlockRenderContext", "RenderedBlock", "Score", "ProvenanceRef",
     "LessonBlock", "BlockRegistry", "VocabFlashcardBlock",
+    "BlockPlayerState", "BlockReference", "BlockPlayerSession", "LessonBlockPlayer",
     "VerifierStatus", "VerifierIssue", "VerifierResult", "Verifier",
     "OrthographyVerifier", "FoundryExistenceVerifier", "DialectTagVerifier", "CompositeVerifier",
     "ReviewQueue", "ReviewProposal", "ReviewDecision", "ReviewStatus",

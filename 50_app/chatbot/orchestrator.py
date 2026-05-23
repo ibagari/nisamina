@@ -71,6 +71,26 @@ except ImportError:
     from brain import Brain, MockBrain
     from tts_garifuna import GarifunaTTS, MockGarifunaTTS, TTSResult
 
+# D-067 TUTOR.LIVE_BRAIN_WIRING — bring LMS tutor + verifier into chatbot orchestrator
+_LMS_PATH = _HERE / ".." / "lms"
+if not _LMS_PATH.exists():
+    _LMS_PATH = _REPO_ROOT / "50_app" / "lms"
+if str(_LMS_PATH.parent.resolve()) not in sys.path:
+    sys.path.insert(0, str(_LMS_PATH.parent.resolve()))
+try:
+    from lms._engine.tutor import SocraticTutor, TutorState, TutorTurn  # type: ignore  # noqa: E402
+    from lms._engine.tutor_verifier import (  # type: ignore  # noqa: E402
+        CompositeVerifier, OrthographyVerifier, FoundryExistenceVerifier,
+        VerifierResult, VerifierStatus,
+    )
+    from lms._engine.kgraph import KnowledgeGraph  # type: ignore  # noqa: E402
+    from lms._engine.olm import OpenLearnerModel  # type: ignore  # noqa: E402
+    from lms._engine.mastery import MasteryGate  # type: ignore  # noqa: E402
+    from lms._engine.pathway import PathwayKind  # type: ignore  # noqa: E402
+    _LMS_AVAILABLE = True
+except ImportError:
+    _LMS_AVAILABLE = False
+
 
 SYSTEM_PROMPT_PATH = _MCP_PATH / "nisamina_mcp" / "guardrails" / "system_prompt_v1.md"
 HALLUCINATION_THRESHOLD: float = 1.0
@@ -147,6 +167,97 @@ class Orchestrator:
             return results[0] if results else None
 
         self.hallucination_detector = HallucinationDetector(lookup_fn=_lookup)
+
+        # D-067 TUTOR.LIVE_BRAIN_WIRING — wire LMS SocraticTutor + CompositeVerifier
+        # Lazy / opt-in: tutor session is created only when start_tutor_session() called.
+        self._lms_available = _LMS_AVAILABLE
+        self._tutor_brain_callable = self._make_tutor_brain_callable() if _LMS_AVAILABLE else None
+        self._composite_verifier = self._make_composite_verifier() if _LMS_AVAILABLE else None
+
+    def _make_tutor_brain_callable(self):
+        """Build the SocraticBrainCallable that wraps self.brain.generate."""
+        def _callable(prompt: str) -> str:
+            try:
+                return self.brain.generate(prompt, max_tokens=256, temperature=0.3)
+            except Exception:  # noqa: BLE001 — tutor falls back to template on brain failure
+                return ""
+        return _callable
+
+    def _make_composite_verifier(self):
+        """Build the non-LLM verifier chain per D-066 (Khanmigo pattern)."""
+        # Foundry-derived known headword set per D-067
+        known_hw = self.foundry.known_headwords()
+        return CompositeVerifier([
+            OrthographyVerifier(),
+            FoundryExistenceVerifier(known_headwords=known_hw),
+        ])
+
+    def start_tutor_session(
+        self,
+        learner_id: str,
+        envir: str,
+        target_headword: str,
+        pathway: str = "novice",
+    ):
+        """Create a SocraticTutor + initial TutorTurn for the given learner.
+
+        Returns (tutor, state, initial_turn). State persistence is the caller's
+        responsibility (database row, session dict, etc.).
+        Per D-067 + D-066 substrate.
+        """
+        if not self._lms_available:
+            raise RuntimeError("LMS engine not available — tutor session requires lms._engine import")
+        olm = OpenLearnerModel(learner_id=learner_id, envir=envir)
+        # Minimal kgraph for now — production wires a per-envir VersionedKnowledgeGraph
+        kg = KnowledgeGraph(envir=envir)
+        try:
+            from lms._engine.kgraph import Node, NodeKind  # type: ignore
+            kg.add_node(Node(f"hw.{target_headword}", NodeKind.HEADWORD, target_headword, envir=envir))
+        except Exception:  # noqa: BLE001
+            pass
+        pathway_kind = PathwayKind(pathway)
+        gate = MasteryGate(olm=olm, kgraph=kg, pathway=pathway_kind)
+        tutor = SocraticTutor(
+            olm=olm,
+            kgraph=kg,
+            mastery_gate=gate,
+            pathway=pathway_kind,
+            brain=self._tutor_brain_callable,
+        )
+        initial = tutor.initial_turn(target_headword)
+        # Build initial state from the tutor's first emission
+        state = TutorState(
+            learner_id=learner_id, envir=envir, target_concept=target_headword,
+            current_scaffold_level=initial.scaffold_level,
+            last_turn_id=initial.turn_id,
+        )
+        return tutor, state, initial
+
+    def verify_brain_output(self, candidate_text: str, learner_envir: str = "garicomm") -> dict:
+        """Apply the CompositeVerifier chain to a candidate brain output.
+
+        Returns a dict {status, issues, candidate_text} for transparency. The
+        orchestrator can call this before serving brain output to learners,
+        per Khanmigo pattern (D-066).
+        """
+        if not self._lms_available or self._composite_verifier is None:
+            return {"status": "lms_unavailable", "issues": [], "candidate_text": candidate_text}
+        # Extract candidate Garifuna tokens from text via existing extractor
+        cab_tokens = list(extract_garifuna_tokens(candidate_text))
+        result = self._composite_verifier.verify(
+            candidate_text,
+            context={"cab_tokens": cab_tokens, "learner_envir": learner_envir},
+        )
+        return {
+            "status": result.status.value,
+            "issues": [
+                {"verifier": i.verifier_name, "severity": i.severity,
+                 "token": i.offending_token, "rationale": i.rationale}
+                for i in result.issues
+            ],
+            "candidate_text": result.candidate_text,
+            "passed": result.passed,
+        }
 
     # ------------------------------------------------------------- #
     # The orchestrate() pipeline

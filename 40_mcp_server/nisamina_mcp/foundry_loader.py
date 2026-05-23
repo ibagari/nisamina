@@ -71,6 +71,17 @@ class FoundryIndex:
             i += 1
         return out
 
+    def known_headwords(self) -> set[str]:
+        """Return the canonical set of lowercased known headwords.
+
+        Per D-067: powers FoundryExistenceVerifier in the LMS engine — verifier
+        rejects any Garifuna token the brain emits that isn't in this set,
+        forcing community-driven coining via neologism_queue rather than
+        hallucination. Closes Kestin & Miller Harvard 2024 "course-tailored
+        grounding NOT vanilla GPT" gap for Garifuna content.
+        """
+        return set(self.by_norm.keys())
+
     def lookup_fuzzy(self, query: str, limit: int = 10, cutoff: float = 0.7) -> list[dict]:
         q = (query or "").strip().lower()
         if not q:
