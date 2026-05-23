@@ -43,6 +43,15 @@ from .micro import (
 )
 from .tutor import (
     ScaffoldLevel, TutorTurn, TutorState, SocraticTutor, SocraticBrainCallable,
+    CognitiveLoadSignal,
+)
+from .blocks import (
+    BlockRenderContext, RenderedBlock, Score, ProvenanceRef,
+    LessonBlock, BlockRegistry, VocabFlashcardBlock,
+)
+from .tutor_verifier import (
+    VerifierStatus, VerifierIssue, VerifierResult, Verifier,
+    OrthographyVerifier, FoundryExistenceVerifier, DialectTagVerifier, CompositeVerifier,
 )
 from .review_queue import ReviewQueue, ReviewProposal, ReviewDecision, ReviewStatus
 from .xapi import XAPIStatement, XAPIEmitter, caliper_to_xapi
@@ -81,6 +90,11 @@ __all__ = [
     "MicroUnitKind", "MicroUnit", "MicroSession", "DailyMicroDelivery",
     "DEFAULT_MICRO_DURATION_MINUTES", "MAX_MICRO_DURATION_MINUTES",
     "ScaffoldLevel", "TutorTurn", "TutorState", "SocraticTutor", "SocraticBrainCallable",
+    "CognitiveLoadSignal",
+    "BlockRenderContext", "RenderedBlock", "Score", "ProvenanceRef",
+    "LessonBlock", "BlockRegistry", "VocabFlashcardBlock",
+    "VerifierStatus", "VerifierIssue", "VerifierResult", "Verifier",
+    "OrthographyVerifier", "FoundryExistenceVerifier", "DialectTagVerifier", "CompositeVerifier",
     "ReviewQueue", "ReviewProposal", "ReviewDecision", "ReviewStatus",
     "XAPIStatement", "XAPIEmitter", "caliper_to_xapi",
     "EngagementSignal", "NudgeKind", "Nudge", "AffectState", "GentleNudgeGenerator",

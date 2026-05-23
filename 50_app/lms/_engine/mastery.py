@@ -34,6 +34,12 @@ class MasteryGateResult:
     unmastered_prerequisites: tuple[str, ...]
     threshold_applied: float
     pathway_kind: str
+    # D-066 SR-aware addition (per D-065 research §1 mastery row):
+    # Headwords whose mastery is at-risk per the FSRS forgetting-curve
+    # (overdue cards; retrievability dropped below target_retention).
+    # If non-empty, the gate STILL passes (mastery was reached) but the lesson
+    # player should surface a review-due nudge before next-unit transition.
+    forgotten_at_risk_headwords: tuple[str, ...] = ()
 
 
 class MasteryGate:
@@ -53,32 +59,56 @@ class MasteryGate:
         olm: OpenLearnerModel,
         kgraph: Optional[KnowledgeGraph] = None,
         pathway: PathwayKind = PathwayKind.NOVICE,
+        sr_cards_by_headword: Optional[dict] = None,
     ):
+        """
+        Args:
+            olm: per-learner BKT belief state
+            kgraph: optional knowledge graph for prerequisite checking
+            pathway: per-pathway threshold (HERITAGE 0.80 / NOVICE 0.85 / L1 0.90)
+            sr_cards_by_headword: optional {headword: Card} dict for SR-aware
+                forgetting-curve check (D-066 + research §1 mastery row).
+                When provided, the gate flags overdue cards as
+                `forgotten_at_risk_headwords` in MasteryGateResult.
+        """
         self.olm = olm
         self.kgraph = kgraph
         self.pathway = pathway
         self.threshold = pathway_for(pathway).assessment_threshold
+        self.sr_cards_by_headword = sr_cards_by_headword or {}
 
-    def check(self, unit_headwords: tuple[str, ...], unit_node_id: Optional[str] = None) -> MasteryGateResult:
+    def check(
+        self,
+        unit_headwords: tuple[str, ...],
+        unit_node_id: Optional[str] = None,
+        now=None,
+    ) -> MasteryGateResult:
         """Check if learner can advance past a unit.
 
         Args:
             unit_headwords: tuple of Garifuna headwords covered by this unit
             unit_node_id: optional KGRAPH node_id; if provided, prerequisites of
                           this node are also checked
+            now: optional datetime for SR-aware overdue check (defaults to UTC now)
 
         Returns:
             MasteryGateResult with can_advance + reasons-not-yet if not.
         """
+        from datetime import datetime, timezone  # local for SR-aware check
+        now = now or datetime.now(timezone.utc)
+
         unmastered_hw = self._check_headwords(unit_headwords)
         mastery_rate = self._mastery_rate(unit_headwords)
         unmastered_prereqs = self._check_prerequisites(unit_node_id)
+        forgotten_at_risk = self._check_forgetting_curve(unit_headwords, now)
 
         can_advance = (
             mastery_rate >= self.threshold
             and len(unmastered_hw) == 0
             and len(unmastered_prereqs) == 0
         )
+        # Note: forgotten_at_risk does NOT block advance; the lesson_player
+        # surfaces a review-due nudge from this field per research §1.
         return MasteryGateResult(
             can_advance=can_advance,
             unit_headword_mastery_rate=mastery_rate,
@@ -86,7 +116,30 @@ class MasteryGate:
             unmastered_prerequisites=tuple(unmastered_prereqs),
             threshold_applied=self.threshold,
             pathway_kind=self.pathway.value,
+            forgotten_at_risk_headwords=tuple(forgotten_at_risk),
         )
+
+    def _check_forgetting_curve(self, unit_headwords: tuple[str, ...], now) -> list[str]:
+        """SR-aware check: flag headwords whose SR card is overdue.
+
+        Per D-065 research §1 mastery-row gap: a learner who mastered X then
+        let the FSRS interval lapse is at-risk-of-forgotten. The gate flags
+        these (non-blocking) so the lesson_player can surface a review prompt
+        before the next-unit transition.
+        """
+        if not self.sr_cards_by_headword:
+            return []
+        at_risk: list[str] = []
+        for hw in unit_headwords:
+            card = self.sr_cards_by_headword.get(hw)
+            if card is None:
+                continue
+            # Card overdue when next_due_at < now AND it was previously mastered
+            if card.next_due_at is not None and card.next_due_at < now:
+                belief = self.olm.beliefs.get(hw)
+                if belief is not None and belief.p_mastered >= self.threshold:
+                    at_risk.append(hw)
+        return at_risk
 
     def _check_headwords(self, headwords: tuple[str, ...]) -> list[str]:
         out: list[str] = []

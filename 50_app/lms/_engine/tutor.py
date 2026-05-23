@@ -75,6 +75,20 @@ class TutorTurn:
 
 
 @dataclass
+class CognitiveLoadSignal:
+    """D-066 + D-065 research §1 (Sweller cognitive load + Kestin Harvard 2024).
+
+    Light signals that suggest the learner is overloaded — surfaced so the
+    tutor can tighten scaffold BEFORE the next incorrect answer fires (vs
+    only-reactive tightening).
+    """
+    average_response_latency_seconds: float = 0.0  # rolling mean
+    consecutive_hints_requested: int = 0
+    consecutive_attempts_on_same_concept: int = 0
+    self_reported_difficulty: Optional[int] = None  # 1-5 if learner volunteered
+
+
+@dataclass
 class TutorState:
     """Per-learner per-concept tutor state."""
     learner_id: str
@@ -85,6 +99,7 @@ class TutorState:
     correct_count: int = 0
     last_turn_id: Optional[str] = None
     advanced: bool = False                 # set True when MasteryGate allows
+    cognitive_load: CognitiveLoadSignal = field(default_factory=CognitiveLoadSignal)
 
 
 class SocraticTutor:
@@ -139,6 +154,10 @@ class SocraticTutor:
         If was_correct is True, attempt to maintain or relax scaffold; if False,
         increase scaffold one level. State is mutated in place per single-session
         convention (state tracking lives outside the tutor for persistence).
+
+        Per D-066 + D-065 research §1: also tightens scaffold proactively if
+        cognitive_load signal warrants — BEFORE the next incorrect answer
+        (vs Sweller-naive only-reactive behavior).
         """
         state.attempt_count += 1
         if was_correct:
@@ -146,7 +165,28 @@ class SocraticTutor:
             state.current_scaffold_level = self._relax_scaffold(state.current_scaffold_level)
         elif was_correct is False:
             state.current_scaffold_level = self._tighten_scaffold(state.current_scaffold_level)
+        elif self._cognitive_load_high(state):
+            # Pre-emptive scaffold tightening per Sweller cognitive-load mgmt
+            state.current_scaffold_level = self._tighten_scaffold(state.current_scaffold_level)
         return self._emit_turn(state, state.target_concept)
+
+    def _cognitive_load_high(self, state: TutorState) -> bool:
+        """Heuristic: high cognitive load signaled by any of:
+        - 3+ consecutive attempts on same concept
+        - 2+ hints requested in a row
+        - self-reported difficulty ≥ 4 (out of 5)
+        - very slow response latency (>30s rolling mean)
+        """
+        cl = state.cognitive_load
+        if cl.consecutive_attempts_on_same_concept >= 3:
+            return True
+        if cl.consecutive_hints_requested >= 2:
+            return True
+        if cl.self_reported_difficulty is not None and cl.self_reported_difficulty >= 4:
+            return True
+        if cl.average_response_latency_seconds > 30.0:
+            return True
+        return False
 
     def _emit_turn(self, state: TutorState, target_headword: str) -> TutorTurn:
         # Find target node in kgraph (if present)
