@@ -1,0 +1,40 @@
+{
+  "platform": {
+    "name": "Nisamina",
+    "tagline": "Garifuna Dimurei + Wadagari Aturiahani — pending community translation",
+    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0"
+  },
+  "mode": {
+    "learner": "Aturiahati",
+    "practitioner": "Aturiahatu",
+    "heritage": "Wadinari"
+  },
+  "nav": {
+    "lessons": "[pending]",
+    "lexicon": "[pending]",
+    "chatbot": "[pending]",
+    "about": "[pending]"
+  },
+  "home": {
+    "title": "Buguya nuani.",
+    "subtitle": "[community translation pending — Commission consultation per F-031]",
+    "cta_learn": "[pending]",
+    "cta_explore": "[pending]"
+  },
+  "cultural_protocol": {
+    "title": "Labayayahoun Ibagari",
+    "principle": "[Garifuna translation pending — community translation pipeline + Commission sign-off]"
+  },
+  "footer": {
+    "attribution_chain": "[pending]",
+    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0",
+    "commission": "Garifuna Commission on Education",
+    "foundation": "Ibagari"
+  },
+  "a11y": {
+    "skip_to_content": "[pending]",
+    "dyslexic_toggle": "[pending]",
+    "high_contrast_toggle": "[pending]",
+    "dark_mode_toggle": "[pending]"
+  }
+}

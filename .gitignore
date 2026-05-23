@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Local-only build outputs
+_deploy_workdir/
+_memory_mirror/
+.cache/
+.next/
+out/
+node_modules/
+
+# Secrets (defense in depth — repo content should never contain these)
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+hf_token*
+.hf_token
+hf_token
+
+# Large media + GGUF (use HF Hub or LFS)
+*.gguf
+*.safetensors
+*.bin
+*.onnx
+*.h5
+*.ckpt
+*.pt
+*.pth
+
+# Large textbook library content (source-of-truth lives elsewhere)
+50_app/lms/*/curriculum_source/*/
+!50_app/lms/*/curriculum_source/*/.gitkeep
+!50_app/lms/*/curriculum_source/README.md
+!50_app/lms/*/curriculum_source/STATUS.md
+
+# Foundry corpus binary file (canonical source-of-truth at 30_lexicon/; deploy via HfApi)
+30_lexicon/foundry_v6/*.jsonl
+30_lexicon/foundry_v6/*.parquet
+
+# Quarantine paths
+*_quarantine_*/
+
+# OS / editor
+Thumbs.db
+
+# macOS dotbar files
+._*

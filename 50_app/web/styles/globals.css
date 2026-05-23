@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* Nisamina V3 web app — design tokens
+ * Per F-034 May 2026 UI standards + WCAG 2.2 AA
+ * Color tokens use HSL so Tailwind utility classes
+ * (text-primary, bg-accent, etc.) work with CSS variables.
+ */
+
+@layer base {
+  :root {
+    /* Light mode — Garifuna terracotta-adjacent palette */
+    --background: 39 60% 97%;                   /* warm off-white */
+    --foreground: 25 50% 8%;                    /* near-black with warm undertone; contrast vs bg ≈15:1 */
+    --card: 0 0% 100%;
+    --card-foreground: 25 50% 8%;
+    --primary: 22 79% 27%;                      /* deep ochre #7a3f0d */
+    --primary-foreground: 39 60% 97%;
+    --secondary: 36 41% 89%;                    /* warm tan */
+    --secondary-foreground: 25 50% 14%;
+    --muted: 36 41% 92%;
+    --muted-foreground: 25 30% 28%;
+    --accent: 22 79% 27%;
+    --accent-foreground: 39 60% 97%;
+    --destructive: 0 73% 41%;
+    --destructive-foreground: 39 60% 97%;
+    --border: 36 30% 76%;
+    --input: 36 30% 76%;
+    --ring: 22 79% 27%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    /* Dark mode — research mixed on K-12 dark-vs-light; respect system preference */
+    --background: 25 30% 9%;
+    --foreground: 39 60% 96%;
+    --card: 25 30% 12%;
+    --card-foreground: 39 60% 96%;
+    --primary: 36 71% 65%;
+    --primary-foreground: 25 30% 9%;
+    --secondary: 25 20% 18%;
+    --secondary-foreground: 39 60% 96%;
+    --muted: 25 20% 18%;
+    --muted-foreground: 36 30% 70%;
+    --accent: 36 71% 65%;
+    --accent-foreground: 25 30% 9%;
+    --destructive: 0 63% 50%;
+    --destructive-foreground: 39 60% 96%;
+    --border: 25 20% 22%;
+    --input: 25 20% 22%;
+    --ring: 36 71% 65%;
+  }
+
+  * { @apply border-border; }
+
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+  }
+
+  /* WCAG 2.2 SC 2.4.11 Focus Appearance (new in 2.2): visible + ≥2 CSS px outline + ≥3:1 contrast */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* WCAG 2.2 SC 2.5.8 Target Size (new in 2.2): ≥44×44px touch targets */
+  button, a[role="button"], [role="button"], input[type="button"], input[type="submit"] {
+    @apply min-h-tap min-w-tap;
+  }
+
+  /* WCAG 2.3.3 — reduced motion respected */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Dyslexia-friendly toggle (per F-034 §1.6 research) */
+  .dyslexic { @apply font-dyslexic; line-height: 1.8; letter-spacing: 0.05em; }
+
+  /* High-contrast toggle */
+  .high-contrast {
+    --foreground: 0 0% 0%;
+    --background: 0 0% 100%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+  }
+}

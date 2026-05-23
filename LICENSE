@@ -1,0 +1,28 @@
+Nisamina — Garifuna Learning Platform
+Copyright © Ibagari Foundation 2026
+
+This work is dual-licensed:
+
+1. CODE (platform implementation under 20_normalize/, 40_mcp_server/, 50_app/,
+   60_training/, 80_validation/, 99_publish/): Apache License 2.0 for brain
+   (google/gemma-4-E4B-it; Apache 2.0) integration scaffolding +
+   CC-BY-NC-SA 4.0 for orchestration / LMS / chatbot / web platform code.
+
+2. CONTENT + PEDAGOGY: Labayayahoun Ibagari Stewardship License (Garifuna
+   sovereign-stewardship adaptation; community-governance scope; see
+   PLATFORM_ARCHITECTURE_INDEX.md §Labayayahoun_Ibagari).
+
+3. CORPUS: per per-source consent / attribution registry maintained in the
+   companion private repo (ibagari/nisamina-internal).
+
+Per F-024 isolation discipline:
+- This (public) repo holds platform CODE + documentation only.
+- The private repo holds governance ledgers + supervisor briefs + audit chain.
+- Corpus binary artifacts (foundry V0.2) are at HF Hub: ibagari/foundry-v0.2
+
+For platform licensing inquiries: garifunalearningacademy@gmail.com
+
+Apache 2.0 full text: https://www.apache.org/licenses/LICENSE-2.0
+CC-BY-NC-SA 4.0 full text: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+*Buguya nuani Wamaraga.*

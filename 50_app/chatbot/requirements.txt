@@ -1,0 +1,23 @@
+# Nisamina chatbot — HF Space requirements
+# Phase-3 interim: Gemma 4 E4B-it via GGUF Q4_K_M (Apache 2.0; ~4.7 GB; free-tier CPU compatible)
+# Per D-054 (brain swap to Gemma 4) + D-055 (Path A GGUF swap) + F-064 (deployment posture)
+
+# Use the abetlen pre-built CPU wheel index to AVOID the C++ source compile
+# that times out HF Space's build job. The wheels are official + maintained.
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+
+# Brain (HF Space deploy) — GGUF loader for Gemma 4 E4B-it (pre-built CPU wheel):
+llama-cpp-python>=0.3
+huggingface_hub>=0.25
+
+# TTS (facebook/mms-tts-cab via VITS — needs transformers + torch):
+transformers>=4.45
+torch>=2.1
+safetensors>=0.4
+
+# UI:
+gradio>=4.40
+
+# Engineer-side dev (already present in repo via M-P2):
+# - nisamina_mcp (40_mcp_server/) — local import; no PyPI needed
+# - pytest (testing only; not needed at HF Space runtime)

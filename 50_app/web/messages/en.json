@@ -1,0 +1,40 @@
+{
+  "platform": {
+    "name": "Nisamina",
+    "tagline": "Garifuna Language + Culture Learning Platform",
+    "license": "Labayayahoun Ibagari · CC-BY-NC-SA 4.0"
+  },
+  "mode": {
+    "learner": "Learner",
+    "practitioner": "Practitioner",
+    "heritage": "Heritage"
+  },
+  "nav": {
+    "lessons": "Lessons",
+    "lexicon": "Lexicon",
+    "chatbot": "Chatbot",
+    "about": "About"
+  },
+  "home": {
+    "title": "Welcome — Buguya nuani.",
+    "subtitle": "A community-owned Garifuna learning platform built with the Garifuna Commission on Education and the Ibagari Foundation.",
+    "cta_learn": "Start learning",
+    "cta_explore": "Explore the dictionary"
+  },
+  "cultural_protocol": {
+    "title": "Labayayahoun Ibagari — the Foundation's Guardianship",
+    "principle": "The Garifuna language is held under Labayayahoun Ibagari — the Foundation's guardianship. Data is not owned but cared for. Any benefit derived flows back to the Garifuna people, through the Garifuna Commission on Education and the Ibagari Foundation. Use is gifted with agüriahati — the kinship-act of nurturing the language into the next generation."
+  },
+  "footer": {
+    "attribution_chain": "Attribution",
+    "license": "License",
+    "commission": "Garifuna Commission on Education",
+    "foundation": "Ibagari Foundation (501(c)(3))"
+  },
+  "a11y": {
+    "skip_to_content": "Skip to main content",
+    "dyslexic_toggle": "Dyslexia-friendly font",
+    "high_contrast_toggle": "High contrast",
+    "dark_mode_toggle": "Dark mode"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "nisamina-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Nisamina V3 Garifuna Learning Platform — Phase-3 web app (Next.js 15 + React 19 + Tailwind v4 + shadcn/ui + Radix + next-intl + Workbox 7)",
+  "license": "CC-BY-NC-SA-4.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:a11y": "axe app/**/*.tsx",
+    "lighthouse": "lhci autorun"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next-intl": "^3.20.0",
+    "@radix-ui/react-dialog": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.0",
+    "@radix-ui/react-popover": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.16.0",
+    "tailwind-merge": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.6.0",
+    "tailwindcss": "^4.0.0-alpha",
+    "@tailwindcss/postcss": "^4.0.0-alpha",
+    "postcss": "^8.4.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.0.0",
+    "@axe-core/cli": "^4.10.0",
+    "@lhci/cli": "^0.14.0",
+    "workbox-webpack-plugin": "^7.3.0"
+  }
+}
